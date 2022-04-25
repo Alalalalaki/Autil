@@ -1,5 +1,5 @@
-from .prints import prints
-from .printv import printt, printf
+from .ipy_print import prints
+from .print import printt, printf
 from .sendmail import sendmail
 from .owari import owari
 # from .wsummary import wsummary
