@@ -2,7 +2,7 @@
 authors = ["alalalalaki <harlan.zhu@gmail.com>"]
 description = "Some Python snippets for a researcher's daily use"
 name = "autil"
-version = "0.2.0"
+version = "0.2.2"
 
 [tool.poetry.dependencies]
 adjustText = "^0.7.3"
@@ -22,6 +22,7 @@ requests_html = "^0.10"
 scikit_learn = "^1.0"
 seaborn = "^0.11"
 selenium = "^3.141.0"
+selenium-wire = "^4.6"
 tenacity = "^8.0.1"
 tqdm = "^4.62"
 translators = "^4.9.5"

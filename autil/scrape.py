@@ -39,17 +39,13 @@ class scraping_general:
             r = self.session.get(url, headers=headers, timeout=timeout)
         return r
 
-    def get_browser(self, headless=True, use_random_proxy=False, wait=14, load_mode='eager', load_timeout=14):
+    def get_browser(self, headless=True, wait=14, load_mode='eager', load_timeout=14):
         """
         Can set load_mode to 'eager', 'none' or 'normal' (default)
         """
         options = Options()
         options.headless = headless
         options.add_argument("window-size=1920,1080")
-        if use_random_proxy:
-            proxies = pd.read_table("../Temp/proxies.txt", header=None)
-            proxy = proxies[0].sample().values[0]
-            options = self.create_proxy_auth_plugin(options, proxy)
         if load_mode:
             self.load_mode["pageLoadStrategy"] = load_mode
             browser = webdriver.Chrome(options=options, desired_capabilities=self.load_mode)
@@ -98,77 +94,3 @@ class scraping_general:
         else:
             raise ValueError(f'Error: tr should be either 1th&1td or 2td: {url} - {tr.text}')
         return n, c
-
-    def create_proxy_auth_plugin(self, options, proxy, SCHEME="http", path=""):
-
-        PROXY_HOST, PROXY_PORT, PROXY_USER, PROXY_PASS = proxy.split(":")
-
-        assert options.headless == False, "Cannot use headless if using proxy auth"
-
-        manifest_json = """
-        {
-            "version": "1.0.0",
-            "manifest_version": 2,
-            "name": "Chrome Proxy",
-            "permissions": [
-                "proxy",
-                "tabs",
-                "unlimitedStorage",
-                "storage",
-                "<all_urls>",
-                "webRequest",
-                "webRequestBlocking"
-            ],
-            "background": {
-                "scripts": ["background.js"]
-            },
-            "minimum_chrome_version":"22.0.0"
-        }
-        """
-
-        background_js = string.Template(
-            """
-        var config = {
-                mode: "fixed_servers",
-                rules: {
-                singleProxy: {
-                    scheme: "${scheme}",
-                    host: "${host}",
-                    port: parseInt(${port})
-                },
-                bypassList: ["localhost"]
-                }
-            };
-
-        chrome.proxy.settings.set({value: config, scope: "regular"}, function() {});
-
-            function callbackFn(details) {
-                return {
-                    authCredentials: {
-                        username: "${username}",
-                        password: "${password}"
-                    }
-                };
-            }
-
-            chrome.webRequest.onAuthRequired.addListener(
-                        callbackFn,
-                        {urls: ["<all_urls>"]},
-                        ['blocking']
-            );
-            """
-        ).substitute(
-            host=PROXY_HOST,
-            port=PROXY_PORT,
-            username=PROXY_USER,
-            password=PROXY_PASS,
-            scheme=SCHEME,
-        )
-
-        pluginfile = path + 'proxy_auth_plugin.zip'
-
-        with zipfile.ZipFile(pluginfile, 'w') as zp:
-            zp.writestr("manifest.json", manifest_json)
-            zp.writestr("background.js", background_js)
-
-        return options.add_extension(pluginfile)
