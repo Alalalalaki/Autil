@@ -19,7 +19,7 @@ class scraping_general:
     def __init__(self, headers=None):
         self.today = datetime.today()
         headers = {
-            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36'} if headers is None else headers
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36'} if headers is None else headers
 
         session = HTMLSession()
         session.headers.update(headers)
