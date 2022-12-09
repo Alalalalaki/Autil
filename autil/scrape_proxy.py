@@ -63,8 +63,10 @@ class ProxySession:
 
 
 class ProxyBrowser(ProxySession):
-    def __init__(self,):
+    def __init__(self, headless=False):
         super().__init__()
+
+        self.headless = headless
 
         self.proxy_options = None
         self.chrome_options = None
@@ -82,6 +84,14 @@ class ProxyBrowser(ProxySession):
 
     def set_option_chrome(self,):
         chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--no-sandbox')
+        # chrome_options.add_argument('--start-maximized')
+        # chrome_options.add_argument('--start-fullscreen')
+        chrome_options.add_argument('--single-process')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument("--incognito")
+        chrome_options.add_argument('--disable-blink-features=AutomationControlled')
+        chrome_options.add_argument("disable-infobars")
         chrome_options.add_experimental_option(
             "excludeSwitches", ["enable-automation"])
         chrome_options.add_experimental_option('useAutomationExtension', False)
@@ -91,7 +101,6 @@ class ProxyBrowser(ProxySession):
             "webrtc.nonproxied_udp_enabled": False
         }
         chrome_options.add_experimental_option("prefs", preferences)
-        chrome_options.add_argument("disable-blink-features=AutomationControlled")
         self.chrome_options = chrome_options
 
     def get_timezone_geolocation(self):
@@ -112,17 +121,17 @@ class ProxyBrowser(ProxySession):
         self.browser.execute_cdp_cmd("Emulation.setGeolocationOverride", geo)
         self.browser.execute_cdp_cmd("Emulation.setTimezoneOverride", tz)
 
-    def set_browser(self, headless=True, wait=14):
+    def set_browser(self, wait=14):
         # not sure seleniumwire allow for load model thus remove the load module
         chrome_options = self.chrome_options
-        chrome_options.headless = headless
+        chrome_options.headless = self.headless
         chrome_options.add_argument("window-size=1920,1080")
 
         browser = webdriver.Chrome(chrome_options=chrome_options, seleniumwire_options=self.proxy_options)
         browser.implicitly_wait(wait)
         self.browser = browser
 
-    def reset_browser(self,):
+    def reset_browser(self, headless=True):
         """After using `update_proxy` or `replace_proxy`, use this function to reset browser"""
         self.set_option_proxy()
         self.set_browser()

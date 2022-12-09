@@ -93,3 +93,14 @@ def add_line(file_path: str, new_line: str, line_idx: int, linebreak: str = "\\\
 
     with open(file_path, 'w', encoding='utf8') as f:
         f.writelines(lines)
+
+
+def drop_line(file_path: str, lines_idx: list):
+
+    with open(file_path, 'r', encoding='utf8') as f:
+        lines = f.readlines()
+
+    lines = [li for idx, li in enumerate(lines) if idx not in lines_idx]
+
+    with open(file_path, 'w', encoding='utf8') as f:
+        f.writelines(lines)
