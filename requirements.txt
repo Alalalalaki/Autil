@@ -18,3 +18,4 @@ numpy==1.21.2
 adjustText==0.7.3
 deepl==1.9.0
 scikit_learn==1.1.1
+labellines==0.5.1
