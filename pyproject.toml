@@ -2,7 +2,7 @@
 authors = ["alalalalaki <harlan.zhu@gmail.com>"]
 description = "Some Python snippets for a researcher's daily use"
 name = "autil"
-version = "0.2.2"
+version = "0.2.3"
 
 [tool.poetry.dependencies]
 adjustText = "^0.7.3"
