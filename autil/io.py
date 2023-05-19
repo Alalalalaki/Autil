@@ -1,19 +1,30 @@
-
 import pickle
+import dill
 from urllib.request import urlopen
-# import dill as pickle  # use dill to help io model instance
 
 
 def write_file(file, file_path):
-    with open(file_path, 'wb') as f:
-        pickle.dump(file, f)
+    try:
+        with open(file_path, 'wb') as f:
+            pickle.dump(file, f)
+    except Exception:
+        with open(file_path, 'wb') as f:
+            dill.dump(file, f)
 
 
 def read_file(file_path):
-    if file_path.startswith('http'):
-        with urlopen(file_path,) as f:
-            file = pickle.load(f)
-    else:
-        with open(file_path, 'rb') as f:
-            file = pickle.load(f)
+    try:
+        if file_path.startswith('http'):
+            with urlopen(file_path,) as f:
+                file = pickle.load(f)
+        else:
+            with open(file_path, 'rb') as f:
+                file = pickle.load(f)
+    except Exception:
+        if file_path.startswith('http'):
+            with urlopen(file_path,) as f:
+                file = dill.load(f)
+        else:
+            with open(file_path, 'rb') as f:
+                file = dill.load(f)
     return file
