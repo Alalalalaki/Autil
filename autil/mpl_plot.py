@@ -5,10 +5,19 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from labellines import labelLine, labelLines
 
 if __name__ != "__main__":
     __version__ = 0.1
 
+
+def add_label_for_lines(ax, lw=3, zorder=2.5):
+    """
+    Add line labels for a line plot
+    """
+    ax.get_lines()[-1].set(lw=lw)
+    labelLines(ax.get_lines(), zorder=zorder)
+    return ax
 
 def plot_scatter_with_text(
         data, x, y, z, hue=None, style=None,
