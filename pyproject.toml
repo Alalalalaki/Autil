@@ -1,5 +1,5 @@
 [tool.poetry]
-authors = ["alalalalaki <harlan.zhu@gmail.com>"]
+authors = ["alalalalaki <akaguro.koyomi@gmail.com>"]
 description = "Some Python snippets for a researcher's daily use"
 name = "autil"
 version = "0.2.4"
