@@ -2,7 +2,7 @@
 authors = ["alalalalaki <harlan.zhu@gmail.com>"]
 description = "Some Python snippets for a researcher's daily use"
 name = "autil"
-version = "0.2.3"
+version = "0.2.4"
 
 [tool.poetry.dependencies]
 adjustText = "^0.7.3"
@@ -12,6 +12,7 @@ cycler = "^0.10"
 deepl = "^1.6.0"
 linearmodels = "^4.24"
 matplotlib = "^3.4"
+matplotlib-label-lines = "^0.5.1"
 numpy = "^1.21"
 pandas = "^1.3"
 pyarrow = "^5.0.0"
